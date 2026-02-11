@@ -3,8 +3,11 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(AppModule);
+  const app = await NestFactory.create(AppModule);
   const logger = new Logger('Worker');
+
+  app.enableShutdownHooks();
+  await app.listen(3001);
 
   logger.log('Worker de Reservas iniciado e aguardando jobs...');
   app.enableShutdownHooks();
