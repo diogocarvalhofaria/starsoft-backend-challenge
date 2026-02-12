@@ -5,6 +5,7 @@ import { QueuesModule } from './queues/queue.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { SessionsModule } from './features/sessions/session.module';
+import { ReservationModule } from './features/reservations/reservation.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { SessionsModule } from './features/sessions/session.module';
     DatabaseModule,
     QueuesModule,
     SessionsModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
