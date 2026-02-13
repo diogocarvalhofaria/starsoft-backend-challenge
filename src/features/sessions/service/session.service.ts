@@ -30,7 +30,7 @@ export class SessionService {
     return await this.sessionRepository.save(session);
   }
 
-  async findAll() {
+  async findAllSession() {
     return await this.sessionRepository.find({ relations: ['seats'] });
   }
 }

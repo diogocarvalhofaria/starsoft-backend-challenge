@@ -10,13 +10,13 @@ export class SessionController {
 
   @Post()
   @ApiOperation({ summary: 'Cria sessão com 50 assentos' })
-  create(@Body() data: CreateSessionDto) {
+  createSession(@Body() data: CreateSessionDto) {
     return this.sessionService.createSession(data);
   }
 
   @Get()
   @ApiOperation({ summary: 'Lista sessões e assentos' })
-  findAll() {
-    return this.sessionService.findAll();
+  findAllSession() {
+    return this.sessionService.findAllSession();
   }
 }

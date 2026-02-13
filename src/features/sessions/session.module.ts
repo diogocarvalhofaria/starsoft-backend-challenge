@@ -11,4 +11,4 @@ import { SessionService } from './service/session.service';
   providers: [SessionService],
   exports: [TypeOrmModule],
 })
-export class SessionsModule {}
+export class SessionModule {}

@@ -15,7 +15,7 @@ import { Queue } from 'bullmq';
 
 @Injectable()
 export class ReservationService {
-  private readonly logger = new Logger(ReservationService.name)
+  private readonly logger = new Logger(ReservationService.name);
   constructor(
     @InjectRepository(Reservation)
     private reservationRepository: Repository<Reservation>,
@@ -104,7 +104,7 @@ export class ReservationService {
       await this.seatRepository.save(seat);
 
       throw new BadRequestException(
-        `Tempo limite excedido (${diffInSeconds.toFixed(1)}s). Assento liberado.`
+        `Tempo limite excedido (${diffInSeconds.toFixed(1)}s). Assento liberado.`,
       );
     }
 

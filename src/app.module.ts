@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { QueuesModule } from './queues/queue.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { SessionsModule } from './features/sessions/session.module';
+import { SessionModule } from './features/sessions/session.module';
 import { ReservationModule } from './features/reservations/reservation.module';
 
 @Module({
@@ -12,7 +12,7 @@ import { ReservationModule } from './features/reservations/reservation.module';
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     QueuesModule,
-    SessionsModule,
+    SessionModule,
     ReservationModule,
   ],
   controllers: [AppController],

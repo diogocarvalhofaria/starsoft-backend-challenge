@@ -26,7 +26,7 @@ export class ReservationController {
     return this.reservationService.findAllReservation();
   }
 
-  @Post(':id/pay')
+  @Post(':reservationId/pay')
   @HttpCode(200)
   @ApiOperation({ summary: 'Confirma o pagamento e finaliza a venda' })
   confirmPayment(@Param('reservationId') reservationId: string) {
