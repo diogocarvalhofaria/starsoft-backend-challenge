@@ -1,8 +1,17 @@
-import { Controller, Post, Body, Get, HttpCode, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  HttpCode,
+  Param,
+  Query,
+} from '@nestjs/common';
 
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateReservationDto } from '../dto/create-reservation.dto';
 import { ReservationService } from '../service/reservation.service';
+import { SearchUserReservationDto } from '../dto/search-user-reservation.dto';
 
 @ApiTags('Reservas')
 @Controller('reservation')
@@ -35,7 +44,10 @@ export class ReservationController {
 
   @Get('user/:userId')
   @ApiOperation({ summary: 'Histórico de reservas do usuário' })
-  findReservationByUser(@Param('userId') userId: string) {
-    return this.reservationService.findReservationByUser(userId);
+  findReservationByUser(
+    @Param('userId') userId: string,
+    @Query() data: SearchUserReservationDto,
+  ) {
+    return this.reservationService.findReservationByUser(userId, data);
   }
 }
