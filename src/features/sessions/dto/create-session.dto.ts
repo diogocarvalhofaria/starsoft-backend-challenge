@@ -13,7 +13,7 @@ export class CreateSessionDto {
   @IsNotEmpty()
   movieTitle: string;
 
-  @ApiProperty({ example: 'Sala 01' })
+  @ApiProperty({ example: '01' })
   @IsString()
   @IsNotEmpty()
   roomId: string;

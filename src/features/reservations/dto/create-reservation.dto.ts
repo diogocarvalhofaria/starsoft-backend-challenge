@@ -8,7 +8,7 @@ export class CreateReservationDto {
   userId: string;
 
   @ApiProperty({
-    example: 'uuid-do-assento-aqui',
+    example: '123',
     description: 'ID do assento desejado',
   })
   @IsString()
