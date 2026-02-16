@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Configuration for the MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: cinema_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mestre
+      MYSQL_DATABASE: cinema_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: mestre
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Configuration for the Redis
+  redis:
+    image: redis:alpine
+    container_name: cinema_redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build: .
+    container_name: cinema_service
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "8000:3000"
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=user
+      - DB_PASS=mestre
+      - DB_NAME=cinema_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PORT=3000
+
+  worker:
+    build: .
+    container_name: cinema_worker
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "8001:3001"
+    environment:
+      - DB_TYPE=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=user
+      - DB_PASS=mestre
+      - DB_NAME=cinema_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - APP_MODE=worker
+      - PORT=3001
+    command: node dist/worker.js
+
+volumes:
+  mysql_data:
