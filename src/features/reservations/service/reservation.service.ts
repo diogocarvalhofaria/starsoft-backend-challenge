@@ -12,6 +12,7 @@ import { Seat, SeatStatus } from '../../sessions/entities/seat.entity';
 import { CreateReservationDto } from '../dto/create-reservation.dto';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
+import { SearchUserReservationDto } from '../dto/search-user-reservation.dto';
 
 @Injectable()
 export class ReservationService {
@@ -118,13 +119,24 @@ export class ReservationService {
     return savedReservation;
   }
 
-  async findReservationByUser(userId: string) {
-    return this.reservationRepository.find({
-      where: { userId },
-      relations: ['seat', 'seat.session'],
-      order: {
-        createdAt: 'DESC',
+  async findReservationByUser(userId: string, data: SearchUserReservationDto) {
+    const { limit = 10, offset = 0, status } = data;
+    const [reservations, total] = await this.reservationRepository.findAndCount(
+      {
+        where: {
+          userId,
+          ...(status ? { status: status as ReservationStatus } : {}),
+        },
+        relations: ['seat', 'seat.session'],
+        skip: offset,
+        take: limit,
       },
-    });
+    );
+    return {
+      data: reservations,
+      count: total,
+      limit: limit,
+      offset: offset,
+    };
   }
 }
