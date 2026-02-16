@@ -135,6 +135,8 @@ export class ReservationService {
     return {
       data: reservations,
       count: total,
+      limit: limit,
+      offset: offset,
     };
   }
 }
