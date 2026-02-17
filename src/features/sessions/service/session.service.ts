@@ -11,6 +11,11 @@ export class SessionService {
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
   ) {}
+
+  /*
+    Este metodo é responsavel por criar uma sessão e gerar automaticamente os assentos.
+    Cada letra equivale a 1 fileira e cada fileira tem 10 assentos, totalizando 60 assentos por sessão
+   */
   async createSession(data: CreateSessionDto) {
     const session = this.sessionRepository.create(data);
 
@@ -30,6 +35,9 @@ export class SessionService {
     return await this.sessionRepository.save(session);
   }
 
+  /*
+    Este metodo é responsavel por listar todas as sessões
+   */
   async findAllSession() {
     return await this.sessionRepository.find({ relations: ['seats'] });
   }
