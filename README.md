@@ -100,7 +100,7 @@ curl -X 'POST' \
 - `POST /api/v1/sessions`: Criar uma nova sessão de filme.
 - `GET /api/v1/sessions`: Listar todas as sessões.
 - `POST /api/v1/reservation`: Reservar um assento.
-- `POST /api/v1/{reservationId}/payments`: Confirmar pagamento de uma reserva.
+- `POST /api/v1/{reservationId}/pay`: Confirmar pagamento de uma reserva.
 - `GET /api/v1/reservation`: Listar todas as reservas.
 - `GET /api/v1/reservation/user/{userId}`: Historico de reservas de um usuário específico.
 
