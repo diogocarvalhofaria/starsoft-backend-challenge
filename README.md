@@ -34,11 +34,11 @@ API REST projetada para resolver o problema de concorrência na venda de ingress
 
 ---
 
-## Roteiro de Teste (Passo a Passo)
+## Roteiro de Teste
 
 Para facilitar a validação, siga este fluxo:
 
-### 1. Popular o Banco (Seed)
+### 1. Popular o Banco
 Execute este comando no terminal para criar uma Sessão e gerar 60 assentos (Fileiras A-F) automaticamente:
 
 ```bash
@@ -52,6 +52,41 @@ curl -X 'POST' \
   "price": 21.00,
   "roomId": "Sala teste"
 }'
+```
+
+### 2. Escolhendo um Assento
+
+O EndPoint responsavel seria `POST /api/v1/reservation`
+- URL: http://localhost:8000/api/v1/reservation
+- Executando esse comando abaixo o status do assento irá para LOCKED
+
+``` bash
+curl -X 'POST' \
+'http://localhost:8000/api/v1/reservation' \
+-H 'Content-Type: application/json' \
+-d '{
+"userId": "usuario-teste-01",
+"seatId": "id-assento"
+}'
+```
+Caso tente realizar uma nova reserva irá receber um 409 Conflict
+
+### 3. Expiração automatica
+O Worker é um serviço separado rodando em background
+- Com o worker rodando é apenas executar o mesmo EndPoint do passo 2
+
+### 4. Fluxo com pagamento
+- Dentro de 30 segundos que executou o passo 3 copie o ID da reserva.
+
+Execute esse comando
+
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/api/v1/reservation/reservationId/pay' \
+  -H 'Content-Type: application/json' \
+  -d ''
+  ```
+ - Caso passe dos 30 segundos irá apresentar uma mensagem de tempo limite excedido
 
 ### Estratégia implementada para resolver o problema de concorrência na venda de ingressos:
 
@@ -86,3 +121,4 @@ curl -X 'POST' \
 - Adicionar testes unitarios e de integração mais robustos, incluindo cenarios de concorrência.
 - Implementar WebSocket ou SSE para notificar os usuários sobre o status de suas reservas em tempo real.
 - Adicionar cache para melhorar a performance em consultas frequentes, como disponibilidade de assentos.
+- Implementar datadog, grafana para monitoramento
