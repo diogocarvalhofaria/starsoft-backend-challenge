@@ -3,6 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { Test } from '@nestjs/testing';
 import { ReservationService } from '../service/reservation.service';
 import { CreateReservationDto } from '../dto/create-reservation.dto';
+import { SearchUserReservationDto } from '../dto/search-user-reservation.dto';
 
 describe('ReservationController', () => {
   let reservationController: ReservationController;
@@ -28,9 +29,15 @@ describe('ReservationController', () => {
   });
 
   it('Search reservations by user id', async () => {
-    await reservationController.findReservationByUser('123');
+    const query: SearchUserReservationDto = {
+      status: 'CANCELLED',
+      limit: 10,
+      offset: 0,
+    };
+    await reservationController.findReservationByUser('123', query);
     expect(mockReservationService.findReservationByUser).toHaveBeenCalledWith(
       '123',
+      query,
     );
   });
 
